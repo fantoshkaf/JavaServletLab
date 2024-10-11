@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Добавить пользователя</title>
+<script>
+    function sendData(event) {
+        event.preventDefault(); 
+
+        const name = document.querySelector('input[name="name"]').value;
+        const surname = document.querySelector('input[name="surname"]').value;
+        const salary = document.querySelector('input[name="salary"]').value;
+
+        const userData = {
+            name: name,
+            surname: surname,
+            salary: salary
+        };
+
+        fetch('/labServletP1/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('userForm').style.display = 'none';
+            document.getElementById('responseMessage').innerHTML = data;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+</head>
+<body>
+	<form id="userForm" onsubmit="sendData(event)">
+		<label>Имя: <input type="text" name="name"> <br/>
+
+		</label> <label>Фамилия: <input type="text" name="surname"> <br/>
+
+		</label> <label>Зарплата: <input type="text" name="salary"> <br/>
+
+		</label>
+		<button type="submit">Создать</button><br/>
+		<br/>
+		<a href="index.jsp"> Домой</a>
+		
+	</form>
+
+	<div id="responseMessage">
+	</div>
+</body>
+</html>

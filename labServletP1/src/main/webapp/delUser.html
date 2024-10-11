@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Удалить пользователя</title>
+</head>
+<script>
+	function deleteUser(event) {
+		event.preventDefault();
+		const id = document.querySelector('input[name="id"]').value;
+		fetch('/labServletP1/del', {
+		    method: 'DELETE',
+		    headers: {
+		        'Content-Type': 'application/json',
+		        'Accept': 'application/json'
+		    },
+		    body: JSON.stringify({ id: id }) 
+		})
+		.then(response => response.text())
+		.then(data => {
+		    document.getElementById('userForm').style.display = 'none';
+
+		    document.getElementById('responseMessage').innerHTML = data;
+		})
+		.catch(error => console.error('Error:', error));	
+    }
+</script>
+<body>
+	<form id="userForm" onsubmit="deleteUser(event)">
+		<label>ID пользователя: <input type="text" name="id">
+		</label>
+		<button type="submit">Удалить</button>
+		<br/>
+		<a href="index.jsp"> Домой</a>
+		
+	</form>
+	<div id="responseMessage"></div>
+	
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Простой калькулятор</title>
+<script>
+    function sendData(event) {
+        event.preventDefault(); 
+
+        const a = document.querySelector('input[name="a"]').value;
+        const b = document.querySelector('input[name="b"]').value;
+        const math = document.querySelector('input[name="math"]').value;
+
+        const calcData = {
+            a: a,
+            b: b,
+            math: math
+        };
+
+        fetch('/labServletP2/calc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(calcData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('userForm').style.display = 'none';
+            document.getElementById('responseMessage').innerHTML = data;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+</head>
+<body>
+	<form id="userForm" onsubmit="sendData(event)">
+		<label>a: <input type="text" name="a"> <br/>
+
+		</label> <label>b: <input type="text" name="b"> <br/>
+
+		</label> <label>знак: <input type="text" name="math"> <br/>
+
+		</label>
+		<button type="submit">вычислить</button>
+		
+	</form>
+
+	<div id="responseMessage"></div>
+
+</body>
+</html>

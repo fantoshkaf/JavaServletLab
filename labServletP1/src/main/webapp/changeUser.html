@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Изменить пользователя</title>
+</head>
+<script>
+    function sendData(event) {
+        event.preventDefault(); 
+
+        const name = document.querySelector('input[name="name"]').value;
+        const surname = document.querySelector('input[name="surname"]').value;
+        const salary = document.querySelector('input[name="salary"]').value;
+		const id = document.querySelector('input[name="id"]').value;
+
+        const userData = {
+            name: name,
+            surname: surname,
+            salary: salary,
+            id: id
+        };
+
+        fetch('/labServletP1/put', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('userForm').style.display = 'none';
+            document.getElementById('responseMessage').innerHTML = data;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+<body>
+	<form id="userForm" onsubmit="sendData(event)">
+		<label>ID: <input type="text" name="id"> <br></label>
+
+		<label>Имя: <input type="text" name="name"> <br>
+
+		</label> <label>Фамилия: <input type="text" name="surname"> <br>
+
+		</label> <label>Зарплата: <input type="text" name="salary"> <br>
+
+		</label>
+			<button type="submit">Изменить</button>
+			<br/>
+		<a href="index.jsp"> Домой</a>
+			
+	</form>
+
+	<div id="responseMessage"></div>
+
+</body>
+</html>
